@@ -1,0 +1,37 @@
+﻿@model _1121726Final.Models.Concert
+
+@{
+    ViewData["Title"] = "演唱會購票";
+}
+
+<h1>🎵 @Model.ConcertName</h1>
+<hr />
+<div class ="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+    <div class="headshot">
+        <img class="card-img-top" src="~/picture/@Model.Group.ImagePath" alt="@Model.Group.Name">
+    </div>
+    <p>🎤 團名：@Model.Group?.Name</p>
+    <p>📍 場地：@Model.Venue</p>
+    <p>📅 日期：@Model.Date.ToString("yyyy-MM-dd")</p>
+    <p>🎟 剩餘座位：@Model.RemainingSeats</p>
+</div>
+
+@if (Model.RemainingSeats > 0)
+{
+    <form asp-action="ConfirmPurchase" asp-controller="Ticket" method="post">
+        <input type="hidden" name="concertId" value="@Model.ConcertId" />
+
+        <label for="buyerName">姓名：</label>
+        <input type="text" name="buyerName" required />
+
+        <button type="submit" class="btn btn-success">✅ 確認購買</button>
+    </form>
+}
+else
+{
+    <p class="text-danger">❌ 票已售罄，無法購買！</p>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

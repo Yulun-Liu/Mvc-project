@@ -1,0 +1,22 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model _1121726Final.Models.Group
+
+<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+    <div class="card">
+        <div class="headshot">
+            <img class="card-img-top" src="~/picture/@Model.ImagePath" alt="@Model.Name">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">@Model.Description</p>
+            <div class="mt-auto d-flex justify-content-end gap-2">
+                <a href="@Url.Action("Purchase", "Ticket", new { concertId = Model.Concert.ConcertId })" class="btn btn-primary">前往訂票</a>
+                <a href="https://zh.wikipedia.org/wiki/@Model.Name" class="btn btn-secondary" target="_blank">了解更多</a>
+            </div>
+        </div>
+    </div>
+</div>

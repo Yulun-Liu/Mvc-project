@@ -1,0 +1,25 @@
+﻿@model IEnumerable<_1121726Final.Models.Group>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>演唱會</h1>
+
+<div class="row">
+    
+    @foreach (var group in Model)
+    {
+        @if (group != null)
+        {
+            @await Html.PartialAsync("_ViewPartial", group)
+        }
+        else
+        {
+            <p>目前沒有團體資料。</p>
+        }
+    }
+</div>
+
+@section topCSS{
+    <link href="~/css/Card.css" rel="stylesheet" />
+}

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<_1121726Final.Models.Ticket>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Fluent;
+@{
+    ViewData["Title"] = "MyTickets";
+    var pagedlist = (IPagedList)ViewBag.usersModel;
+}
+
+<h1>🎟查詢我的票務</h1>
+
+<form asp-action="MyTickets" asp-controller="Ticket" method="get">
+    <label for="buyerName">輸入姓名：</label>
+    <input type="text" name="buyerName" required />
+    <button type="submit" class="btn btn-primary">查詢</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Concert.ConcertName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Concert.Venue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPurchased)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Concert.ConcertName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Concert.Venue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPurchased)
+            </td>
+            <td>
+                @if (item.IsPurchased)
+                {
+                    @*onsubmit 會跳出視窗，按下確定會執行 取消會不變*@
+                    <form asp-action="CancelPurchase" asp-controller="Ticket" method="post" onsubmit="return confirm('確定要取消這張票嗎？');"> 
+                    <input type="hidden" name="ticketId" value="@item.TicketId" />
+                    <button type="submit" class="btn btn-danger">取消購票</button>
+                    </form>
+                }
+                else
+                {
+                    <span class="text-muted">已取消</span>
+                }
+            </td>
+
+        </tr>
+}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-muted" colspan="5">
+                第 @(pagedlist.PageCount < pagedlist.PageNumber ? 0 : pagedlist.PageNumber) 頁，共 @pagedlist.PageCount 頁。
+                每頁 @pagedlist.PageSize 筆資料，全部共有 @pagedlist.TotalItemCount 筆資料。
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<div style="align-content:center">
+    @(Html.Pager(pagedlist)
+        .Url(page => Url.Action("MyTickets", new { buyerName = ViewBag.buyerName, page }))
+        .Build())
+</div>
